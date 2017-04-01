@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+
 from ConfigParser import ConfigParser
 
 from bartclock.bart_lib import departure_info_for_station
@@ -8,7 +10,7 @@ config = ConfigParser()
 config.read('./config.ini')
 
 info = departure_info_for_station(url=config.get('bart', 'base_url'),
-                                  key=config.get('bart', 'API_KEY'),
+                                  key=os.environ.get('BART_API_KEY'),
                                   station=config.get('bart', 'origin'))
 
 print info
