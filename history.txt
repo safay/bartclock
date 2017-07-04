@@ -1,10 +1,31 @@
+# set up your RPi with a different password
 sudo apt-get update
 sudo raspi-config
 sudo rm /etc/ssh/ssh_host_*
 sudo dpkg-reconfigure openssh-server
-sudo apt-get install python-imaging
+
+# install git
 sudo apt-get install git-core
+
+
 git clone https://github.com/safay/bartclock.git
 cd bartclock/
 sudo apt-get install emacs
+
+# Nice tutorial on setting up Python dev environment on your RPi
+# http://raspberry.io/wiki/how-to-get-python-on-your-raspberrypi/
+
+# install python dev tools
+sudo apt-get install python-dev
+curl -O https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+sudo pip install virtualenv
+
+# create a new virtualenv
+virtualenv ve
+
+# DotStar tutorial
+# https://learn.adafruit.com/adafruit-dotstar-leds
+sudo apt-get install python-imaging
+git clone https://github.com/adafruit/Adafruit_DotStar_Pi.git
 
