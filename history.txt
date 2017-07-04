@@ -1,0 +1,10 @@
+sudo apt-get update
+sudo raspi-config
+sudo rm /etc/ssh/ssh_host_*
+sudo dpkg-reconfigure openssh-server
+sudo apt-get install python-imaging
+sudo apt-get install git-core
+git clone https://github.com/safay/bartclock.git
+cd bartclock/
+sudo apt-get install emacs
+
