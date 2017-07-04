@@ -1,3 +1,6 @@
+# finding your RPi on the network
+sudo nmap -sP 192.168.1.0/24
+
 # set up your RPi with a different password
 sudo apt-get update
 sudo raspi-config
