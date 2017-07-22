@@ -1,11 +1,15 @@
 import requests
 from xml.etree import ElementTree
-from xml import etree
+
+
+def get_raw_response_text(url, key, station):
+    response = requests.get(url.format(station, key))
+    return response.text
+
 
 def departure_info_for_station(url, key, station):
-    response = requests.get(url.format(station, key))
-    response.text
-    root = ElementTree.fromstring(response.text)
+    raw_response = get_raw_response_text(url, key, station)
+    root = ElementTree.fromstring(raw_response)
     info = {}
     trains = {}
     for station_info in root:
@@ -20,7 +24,9 @@ def departure_info_for_station(url, key, station):
                             for incoming in train_line:
                                 if incoming.tag == 'minutes':
                                     arr_times.append(incoming.text)
-                    trains[dest] = arr_times
+                                if incoming.tag == 'hexcolor':
+                                    color = incoming.text
+                    trains[dest] = {'times': arr_times, 'color': color}
         if station_info.tag == 'message':
             info['message'] = station_info.text
     info['times'] = trains

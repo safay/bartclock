@@ -1,13 +1,21 @@
 #!/usr/bin/env python
 
+# command line utility to test the departure_info_for_station() function
+
 import os
 
 from ConfigParser import ConfigParser
 
-from bartclock.bart_lib import departure_info_for_station
+from bartclock.bart_lib import departure_info_for_station, get_raw_response_text
 
 config = ConfigParser()
 config.read('./config.ini')
+
+raw_response = get_raw_response_text(url=config.get('bart', 'base_url'),
+                                  key=os.environ.get('BART_API_KEY'),
+                                  station=config.get('bart', 'origin'))
+
+print raw_response
 
 info = departure_info_for_station(url=config.get('bart', 'base_url'),
                                   key=os.environ.get('BART_API_KEY'),
