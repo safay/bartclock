@@ -1,11 +1,6 @@
 #!/usr/bin/python
 
-# Simple strand test for Adafruit Dot Star RGB LED strip.
-# This is a basic diagnostic tool, NOT a graphics demo...helps confirm
-# correct wiring and tests each pixel's ability to display red, green
-# and blue and to forward data down the line.  By limiting the number
-# and color of LEDs, it's reasonably safe to power a couple meters off
-# USB.  DON'T try that with other code!
+# Modified from Adafruit Dot Star RGB LED strip test code.
 
 import time
 from dotstar import Adafruit_DotStar
@@ -44,3 +39,11 @@ if(color == 0): color = 0xFF0000 # If black, reset to red
 
 tail += 1                        # Advance tail position
 if(tail >= numpixels): tail = 0  # Off end? Reset
+
+
+def clear_pixel(index):
+    # clear a pixel based on its index
+    strip.setPixelColor(index, 0)
+
+def light_pixel(index, color, brightness):
+    pass
