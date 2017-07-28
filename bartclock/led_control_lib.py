@@ -7,18 +7,18 @@ import numpy as np
 
 from dotstar import Adafruit_DotStar
 
-
-
-def init_strip(numpixels, datapin, clockpin):
-    
-
 numpixels = 60 # Number of LEDs in strip
 datapin   = 23
 clockpin  = 24
-strip     = Adafruit_DotStar(numpixels, datapin, clockpin)
-strip.begin()           # Initialize pins for output
-strip.setBrightness(64) # Limit brightness to ~1/4 duty cycle
-return strip
+
+
+def init_strip(numpixels, datapin, clockpin):
+    strip = Adafruit_DotStar(numpixels, datapin, clockpin)
+    strip.begin()           # Initialize pins for output
+    strip.setBrightness(64) # Limit brightness to ~1/4 duty cycle
+    return strip
+
+init_strip(numpixels, datapin, clockpin)
 
 # Runs 10 LEDs at a time along strip, cycling through red, green and blue.
 # This requires about 200 mA for all the 'on' pixels + 1 mA per 'off' pixel.
@@ -62,8 +62,19 @@ def light_pixel(index, color, brightness):
 # 20fps
 # so it would look something like this:
 
+def make_rgb_hex(red, green, blue):
+    hex_out = "0x"
+    def _make_hex(input):
+        out = hex(input)[2:]
+        if len(out) == 1:
+            out = "0" + out
+        return out
+    hex_out = hex_out + _make_hex(red) + _make_hex(green) + _make_hex(blue)
+    return hex_out
+
+
 class BartStrip(object): # check to see how to inherit from the DotStar object...
-    # Note: This is not the master controller.  It is the strip controller, and that is all.
+    # Note: This is not the master controller.  It is the strip controller; keep its functionality limited so
     def __init__(self, numpixels, datapin, clockpin):
         self.strip = Adafruit_DotStar(numpixels, datapin, clockpin)
 
@@ -77,5 +88,6 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         # where led_ix is a np array of strip indicies
         # use this to generate a new array of color intensities.  Overlay R/G/B to cycle through colors
         array_of_color_intensities = [int(round(x*255)) for x in modulate(0.5, 0.5, led_ix)]
+
         pass
 
