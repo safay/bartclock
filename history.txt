@@ -1,6 +1,12 @@
 # finding your RPi on the network
 sudo nmap -sP 192.168.1.0/24
 
+# faster solution:
+arp -na | grep -i b8:27:eb
+# then ssh into the IP address you find there..
+ssh pi@10.0.1.18
+
+
 # set up your RPi with a different password
 sudo apt-get update
 sudo raspi-config
