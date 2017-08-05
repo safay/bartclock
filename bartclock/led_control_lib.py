@@ -23,25 +23,22 @@ init_strip(numpixels, datapin, clockpin)
 # Runs 10 LEDs at a time along strip, cycling through red, green and blue.
 # This requires about 200 mA for all the 'on' pixels + 1 mA per 'off' pixel.
 
-head  = 0               # Index of first 'on' pixel
-tail  = -10             # Index of last 'off' pixel
-color = 0xFF0000        # 'On' color (starts red)
-
-while True:                              # Loop forever
-
-    strip.setPixelColor(head, color) # Turn on 'head' pixel
-    strip.setPixelColor(tail, 0)     # Turn off 'tail'
-    strip.show()                     # Refresh strip
-    time.sleep(1.0 / 50)             # Pause 20 milliseconds (~50 fps)
-
-    head += 1                        # Advance head position
-    if(head >= numpixels):           # Off end of strip?
-        head    = 0              # Reset to start
-color >>= 8              # Red->green->blue->black
-if(color == 0): color = 0xFF0000 # If black, reset to red
-
-tail += 1                        # Advance tail position
-if(tail >= numpixels): tail = 0  # Off end? Reset
+def rgb_runner_test():
+    head  = 0               # Index of first 'on' pixel
+    tail  = -10             # Index of last 'off' pixel
+    color = 0xFF0000        # 'On' color (starts red)
+    while True:                              # Loop forever
+        strip.setPixelColor(head, color) # Turn on 'head' pixel
+        strip.setPixelColor(tail, 0)     # Turn off 'tail'
+        strip.show()                     # Refresh strip
+        time.sleep(1.0 / 50)             # Pause 20 milliseconds (~50 fps)
+        head += 1                        # Advance head position
+        if(head >= numpixels):           # Off end of strip?
+            head    = 0              # Reset to start
+    color >>= 8              # Red->green->blue->black
+    if(color == 0): color = 0xFF0000 # If black, reset to red
+    tail += 1                        # Advance tail position
+    if(tail >= numpixels): tail = 0  # Off end? Reset
 
 
 def clear_pixel(index):
@@ -73,10 +70,19 @@ def make_rgb_hex(red, green, blue):
     return hex_out
 
 
+def modulate(wavelength, height, led_ix):
+    # sinewave modulation of an array
+    # in this application used to generate a new vector of one of the three colors (RGB) in the dotstar strip
+    modulated_values = height * (np.sin(led_ix / (wavelength * np.pi)) + 1)
+    array_of_color_intensities = [int(round(x*255)) for x in modulated_values]
+    return array_of_color_intensities
+
+
 class BartStrip(object): # check to see how to inherit from the DotStar object...
     # Note: This is not the master controller.  It is the strip controller; keep its functionality limited so
     def __init__(self, numpixels, datapin, clockpin):
         self.strip = Adafruit_DotStar(numpixels, datapin, clockpin)
+        self.led_ix = range(0, numpixels)
 
     def update(self, bartinfo):
         # simple implementation: take the bart API info and update the strip
@@ -84,10 +90,7 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
 
     def idle(self):
         # This is a mode with pretty lights.  For testing and use when BART is not running.
-        modulate = lambda wavelength, height, x: height * (np.sin(x / (wavelength * np.pi)) + 1)
-        # where led_ix is a np array of strip indicies
-        # use this to generate a new array of color intensities.  Overlay R/G/B to cycle through colors
-        array_of_color_intensities = [int(round(x*255)) for x in modulate(0.5, 0.5, led_ix)]
-
+        # How do we get in and out of this mode?  Do we need concurrency to check the BART API periodically?
+        # I can imagine going into the mode with a while loop.  But then we need a way to break out.
         pass
 
