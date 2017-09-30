@@ -31,4 +31,9 @@ git clone https://github.com/adafruit/Adafruit_DotStar_Pi.git
 
 #update RPi firmware
 sudo rpi-update
+sudo apt-get update
+sudo apt-get upgrade
+
+# to ensure user has access to GPIO pins
+sudo adduser pi gpio
 
