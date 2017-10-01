@@ -18,12 +18,11 @@ def init_strip(numpixels, datapin, clockpin):
     strip.setBrightness(64) # Limit brightness to ~1/4 duty cycle
     return strip
 
-init_strip(numpixels, datapin, clockpin)
-
 # Runs 10 LEDs at a time along strip, cycling through red, green and blue.
 # This requires about 200 mA for all the 'on' pixels + 1 mA per 'off' pixel.
 
 def rgb_runner_test():
+    strip = init_strip(numpixels=numpixels, datapin=datapin, clockpin=clockpin)
     head  = 0               # Index of first 'on' pixel
     tail  = -10             # Index of last 'off' pixel
     color = 0xFF0000        # 'On' color (starts red)
@@ -91,7 +90,7 @@ def increment_vector(vector, max=100):
 class BartStrip(object): # check to see how to inherit from the DotStar object...
     # Note: This is not the master controller.  It is the strip controller; keep its functionality limited so
     def __init__(self, numpixels, datapin, clockpin):
-        self.strip = Adafruit_DotStar(numpixels, datapin, clockpin)
+        self.strip = init_strip(numpixels=numpixels, datapin=datapin, clockpin=clockpin)
         self.led_ix = range(0, numpixels)
 
     def update(self, bartinfo):
@@ -122,3 +121,7 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
                 step += 1
             else:
                 step = 0
+
+
+def main():
+    bartstrip = BartStrip(numpixels=numpixels, datapin=datapin, clockpin=clockpin)
