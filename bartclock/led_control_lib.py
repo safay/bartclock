@@ -58,14 +58,13 @@ def light_pixel(index, color, brightness):
 # so it would look something like this:
 
 def make_rgb_hex(red, green, blue):
-    hex_out = "0x"
     def _make_hex(input):
         out = hex(input)[2:]
         if len(out) == 1:
             out = "0" + out
         return out
-    hex_out = hex_out + _make_hex(red) + _make_hex(green) + _make_hex(blue)
-    return hex_out
+    total = blue + (256 * green) + (65536 * blue)
+    return hex(total)
 
 
 def sine_modulate(wavelength, height, vector):
