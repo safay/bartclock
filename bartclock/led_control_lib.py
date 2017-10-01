@@ -2,7 +2,6 @@
 # Modified from Adafruit Dot Star RGB LED strip test code.
 
 import time
-import sys
 
 import numpy as np
 

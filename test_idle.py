@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 
 from bartclock.led_control_lib import BartStrip
 
