@@ -1,4 +1,3 @@
-#!/usr/bin/python
 
 # Modified from Adafruit Dot Star RGB LED strip test code.
 
@@ -124,12 +123,3 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
             else:
                 step = 0
 
-
-def main():
-    bartstrip = BartStrip(numpixels=numpixels, datapin=datapin, clockpin=clockpin)
-    bartstrip.idle()
-
-
-if __name__=='__main__':
-    sys.exit(main())
-    

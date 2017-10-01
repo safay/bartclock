@@ -1,3 +1,12 @@
-from bartclock.led_control_lib import rgb_runner_test
+#!/usr/bin/python
 
-rgb_runner_test()
+from bartclock.led_control_lib import BartStrip
+
+
+def main():
+    bartstrip = BartStrip(numpixels=numpixels, datapin=datapin, clockpin=clockpin)
+    bartstrip.idle()
+
+
+if __name__=='__main__':
+    sys.exit(main())
