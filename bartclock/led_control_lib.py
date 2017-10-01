@@ -3,6 +3,8 @@
 # Modified from Adafruit Dot Star RGB LED strip test code.
 
 import time
+import sys
+
 import numpy as np
 
 from dotstar import Adafruit_DotStar
@@ -125,3 +127,9 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
 
 def main():
     bartstrip = BartStrip(numpixels=numpixels, datapin=datapin, clockpin=clockpin)
+    bartstrip.idle()
+
+
+if __name__=='__main__':
+    sys.exit(main())
+    
