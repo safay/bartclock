@@ -13,8 +13,8 @@ numpixels = 60 # Number of LEDs in strip
 datapin   = 23
 clockpin  = 24
 
-settings = {'red':{'wl':17, 'h':1.75},
-            'green':{'wl':7, 'h':0.75},
+settings = {'red':{'wl':17, 'h':0.25},
+            'green':{'wl':7, 'h':1},
             'blue':{'wl':13, 'h':0.5}}
 
 
