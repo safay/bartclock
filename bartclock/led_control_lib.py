@@ -7,6 +7,8 @@ import numpy as np
 
 from dotstar import Adafruit_DotStar
 
+from time import sleep
+
 numpixels = 60 # Number of LEDs in strip
 datapin   = 23
 clockpin  = 24
@@ -40,9 +42,6 @@ def rgb_runner_test():
     if(tail >= numpixels): tail = 0  # Off end? Reset
 
 
-def clear_pixel(index):
-    # clear a pixel based on its index
-    strip.setPixelColor(index, 0)
 
 def light_pixel(index, color, brightness):
     pass
@@ -105,7 +104,7 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         settings = {'red':{'wl':0.5, 'h':0.75},
                     'green':{'wl':2, 'h':0.75},
                     'blue':{'wl':4, 'h':10}}
-        while true:
+        while True:
             sleep(0.2)
             # set the pixel colors
             frame = [x + step for x in self.led_ix]
