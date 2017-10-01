@@ -112,6 +112,8 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
             blue = sine_modulate(settings['blue']['wl'], settings['blue']['h'], frame)
             for ix, r, g, b in zip(self.led_ix, red, green, blue):
                 color = make_rgb_hex(r, g, b)
+                print ix
+                print color
                 self.strip.setPixelColor(ix, color)
             # show the strip
             self.strip.show
