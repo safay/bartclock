@@ -71,7 +71,7 @@ def make_rgb_hex(red, green, blue):
 def sine_modulate(wavelength, height, vector):
     # sinewave modulation of an array
     # in this application used to generate a new vector of one of the three colors (RGB) in the dotstar strip
-    modulated_values = height * (np.sin(vector / (wavelength * np.pi)) + 1)
+    modulated_values = height * (np.sin(np.array(vector) / (wavelength * np.pi)) + 1)
     array_of_color_intensities = [int(round(x*255)) for x in modulated_values]
     return array_of_color_intensities
 
