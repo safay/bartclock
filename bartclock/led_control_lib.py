@@ -13,6 +13,10 @@ numpixels = 60 # Number of LEDs in strip
 datapin   = 23
 clockpin  = 24
 
+settings = {'red':{'wl':17, 'h':1.75},
+            'green':{'wl':7, 'h':0.75},
+            'blue':{'wl':13, 'h':0.5}}
+
 
 def init_strip(numpixels, datapin, clockpin):
     strip = Adafruit_DotStar(numpixels, datapin, clockpin)
@@ -64,7 +68,7 @@ def make_rgb_hex(red, green, blue):
             out = "0" + out
         return out
     total = blue + (256 * green) + (65536 * blue)
-    return hex(total)
+    return total
 
 
 def sine_modulate(wavelength, height, vector):
@@ -100,9 +104,6 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         # How do we get in and out of this mode?  Do we need concurrency to check the BART API periodically?
         # I can imagine going into the mode with a while loop.  But then we need a way to break out.
         step = 0
-        settings = {'red':{'wl':0.5, 'h':0.75},
-                    'green':{'wl':2, 'h':0.75},
-                    'blue':{'wl':4, 'h':10}}
         while True:
             sleep(0.2)
             # set the pixel colors
@@ -112,11 +113,9 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
             blue = sine_modulate(settings['blue']['wl'], settings['blue']['h'], frame)
             for ix, r, g, b in zip(self.led_ix, red, green, blue):
                 color = make_rgb_hex(r, g, b)
-                print ix
-                print color
                 self.strip.setPixelColor(ix, color)
             # show the strip
-            self.strip.show
+            self.strip.show()
             if step <= maxstep:
                 step += 1
             else:
