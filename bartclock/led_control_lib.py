@@ -18,7 +18,7 @@ def init_strip(numpixels, datapin, clockpin):
     strip.setBrightness(64) # Limit brightness to ~1/4 duty cycle
     return strip
 
-init_strip(numpixels, datapin, clockpin)
+strip = init_strip(numpixels, datapin, clockpin)
 
 # Runs 10 LEDs at a time along strip, cycling through red, green and blue.
 # This requires about 200 mA for all the 'on' pixels + 1 mA per 'off' pixel.
