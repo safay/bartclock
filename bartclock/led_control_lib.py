@@ -116,7 +116,7 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         # example: {'message': None, 'times': {'Richmond': {'color': '#ff9933', 'times': ['15', '35', '57']},
         # 'Warm Springs': {'color': '#ff9933', 'times': ['15', '35', '55']}}}
         #int(color, 16)
-        print bartinfo['times'].keys()
+        print bartinfo
 
 
 
