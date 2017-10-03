@@ -19,7 +19,9 @@ def get_configuration():
 def main():
     config = get_configuration()
     # set up strip
-    led_strip = BartStrip(config.get('led', 'numpixels'), config.get('led', 'datapin'), config.get('led', 'clockpin'))
+    led_strip = BartStrip(int(config.get('led', 'numpixels')),
+                          int(config.get('led', 'datapin')),
+                          int(config.get('led', 'clockpin')))
     # continuous loop
     while True:
         bartinfo = departure_info_for_station(url=config.get('bart', 'base_url'),
