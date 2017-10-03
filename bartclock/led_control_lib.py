@@ -13,9 +13,27 @@ numpixels = 60 # Number of LEDs in strip
 datapin   = 23
 clockpin  = 24
 
-settings = {'red':{'wl':17, 'h':0.25},
-            'green':{'wl':7, 'h':1},
-            'blue':{'wl':13, 'h':0.5}}
+pretty_smooth = {'red':{'wl':17, 'h':0.25},
+            'green':{'wl':7, 'h':0.25},
+            'blue':{'wl':13, 'h':0.25}}
+
+worm_glitch = {'red':{'wl':-5, 'h':0.25},
+            'green':{'wl':7, 'h':0.25},
+            'blue':{'wl':3, 'h':-0.25}}
+
+candy_gradient = {'red':{'wl':-2, 'h':0.25},
+            'green':{'wl':7, 'h':0.25},
+            'blue':{'wl':5, 'h':0.25}}
+
+pretty_stripes = {'red':{'wl':1.3, 'h':0.1},
+            'green':{'wl':-1.1, 'h':0.1},
+            'blue':{'wl':1, 'h':0.1}}
+
+very_smooth = {'red':{'wl':17, 'h':0.25},
+            'green':{'wl':11, 'h':0.25},
+            'blue':{'wl':23, 'h':0.25}}
+
+settings = pretty_smooth
 
 
 def init_strip(numpixels, datapin, clockpin):
@@ -67,7 +85,7 @@ def make_rgb_hex(red, green, blue):
         if len(out) == 1:
             out = "0" + out
         return out
-    total = blue + (256 * green) + (65536 * blue)
+    total = blue + (256 * green) + (256 * 256 * red)
     return total
 
 
@@ -99,7 +117,7 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         # simple implementation: take the bart API info and update the strip
         pass
 
-    def idle(self, maxstep = 100):
+    def idle(self, maxstep = 60000):
         # This is a mode with pretty lights.  For testing and use when BART is not running.
         # How do we get in and out of this mode?  Do we need concurrency to check the BART API periodically?
         # I can imagine going into the mode with a while loop.  But then we need a way to break out.
