@@ -1,7 +1,7 @@
 import os
 import time
 from ConfigParser import ConfigParser
-from bartclock.bart_lib import departure_info_for_station
+from bartclock.bart_lib import departure_info_for_station, trains_are_coming
 from bartclock.led_control_lib import BartStrip
 
 
@@ -27,7 +27,6 @@ def main():
         bartinfo = departure_info_for_station(url=config.get('bart', 'base_url'),
                                               key=os.environ.get('BART_API_KEY'),
                                               station=config.get('bart', 'origin'))
-        trains_are_coming = True
         if trains_are_coming(bartinfo):
             led_strip.update(bartinfo)
         time.sleep(3)
