@@ -31,3 +31,8 @@ def departure_info_for_station(url, key, station):
             info['message'] = station_info.text
     info['times'] = trains
     return info
+
+
+def trains_are_coming(info):
+    # function returns True if trains are coming...
+    return True

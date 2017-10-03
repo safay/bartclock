@@ -15,10 +15,9 @@ raw_response = get_raw_response_text(url=config.get('bart', 'base_url'),
                                   key=os.environ.get('BART_API_KEY'),
                                   station=config.get('bart', 'origin'))
 
-print raw_response
 
 info = departure_info_for_station(url=config.get('bart', 'base_url'),
                                   key=os.environ.get('BART_API_KEY'),
                                   station=config.get('bart', 'origin'))
 
-print info
+print(info)

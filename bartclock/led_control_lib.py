@@ -33,8 +33,6 @@ very_smooth = {'red':{'wl':17, 'h':0.25},
             'green':{'wl':11, 'h':0.25},
             'blue':{'wl':23, 'h':0.25}}
 
-settings = pretty_smooth
-
 
 def init_strip(numpixels, datapin, clockpin):
     strip = Adafruit_DotStar(numpixels, datapin, clockpin)
@@ -115,9 +113,15 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
 
     def update(self, bartinfo):
         # simple implementation: take the bart API info and update the strip
-        pass
+        # example: {'message': None, 'times': {'Richmond': {'color': '#ff9933', 'times': ['15', '35', '57']},
+        # 'Warm Springs': {'color': '#ff9933', 'times': ['15', '35', '55']}}}
+        int(color, 16)
+        print bartinfo['times'].keys()
 
-    def idle(self, maxstep = 60000):
+
+
+
+    def idle(self, settings=pretty_smooth, maxstep=60000):
         # This is a mode with pretty lights.  For testing and use when BART is not running.
         # How do we get in and out of this mode?  Do we need concurrency to check the BART API periodically?
         # I can imagine going into the mode with a while loop.  But then we need a way to break out.

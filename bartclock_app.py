@@ -25,12 +25,11 @@ def main():
         bartinfo = departure_info_for_station(url=config.get('bart', 'base_url'),
                                               key=os.environ.get('BART_API_KEY'),
                                               station=config.get('bart', 'origin'))
-        if trains_are_coming:
+        trains_are_coming = True
+        if trains_are_coming(bartinfo):
             led_strip.update(bartinfo)
-        else
-        time.sleep(15)
+        time.sleep(3)
         # {'message': None, 'times': {'Richmond': ['Leaving', '21', '40'], 'Warm Springs': ['Leaving', '20', '40']}}
-
 
 if __name__ == "__main__":
     main()
