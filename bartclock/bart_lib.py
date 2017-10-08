@@ -9,6 +9,7 @@ def get_raw_response_text(url, key, station):
 
 def departure_info_for_station(url, key, station):
     raw_response = get_raw_response_text(url, key, station)
+    assert '<error>' not in raw_response, "found error in response: {}".format(raw_response)
     root = ElementTree.fromstring(raw_response)
     info = {}
     trains = {}
