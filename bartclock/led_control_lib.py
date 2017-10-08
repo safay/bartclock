@@ -129,13 +129,13 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         for i in self.led_ix:
             self.strip.setPixelColor(i, black)
         for station in bartinfo.get('times').keys():
-            color = int(bartinfo.get('times').get(station).get('color'), 16)
+            color = int(bartinfo.get('times').get(station).get('color')[1:], 16)
             for t in bartinfo.get('times').get(station).get('times'):
-                self.strip.setPixelColor(t - 1, color)
+                self.strip.setPixelColor(int(t) - 1, color)
         self.strip.show()
 
 
-    def idle(self, settings=choppy, maxstep=60000):
+    def idle(self, settings=gummi_worm, maxstep=60000):
         # This is a mode with pretty lights.  For testing and use when BART is not running.
         # How do we get in and out of this mode?  Do we need concurrency to check the BART API periodically?
         # I can imagine going into the mode with a while loop.  But then we need a way to break out.
