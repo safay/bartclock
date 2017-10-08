@@ -29,7 +29,7 @@ def main():
                                               station=config.get('bart', 'origin'))
         if trains_are_coming(bartinfo):
             led_strip.update(bartinfo)
-        time.sleep(3)
+        time.sleep(5)
         # {'message': None, 'times': {'Richmond': ['Leaving', '21', '40'], 'Warm Springs': ['Leaving', '20', '40']}}
 
 if __name__ == "__main__":

@@ -34,6 +34,13 @@ def departure_info_for_station(url, key, station):
     return info
 
 
+#{'message': None, 'times': {'Richmond': {'color': '#ff9933', 'times': ['13', '38', '61']},
+                           # 'Warm Springs': {'color': '#ff9933', 'times': ['13', '35']}}}
+
 def trains_are_coming(info):
     # function returns True if trains are coming...
-    return True
+    times = info.get('times').get('Warm Springs').get('times')
+    if len(times) > 0:
+        return True
+    else:
+        return False

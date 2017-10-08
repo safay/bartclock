@@ -125,9 +125,14 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         # example: {'message': None, 'times': {'Richmond': {'color': '#ff9933', 'times': ['15', '35', '57']},
         # 'Warm Springs': {'color': '#ff9933', 'times': ['15', '35', '55']}}}
         #int(color, 16)
-        print bartinfo
-
-
+        black = make_rgb_hex(0, 0, 0)
+        for i in self.led_ix:
+            self.strip.setPixelColor(i, black)
+        for station in bartinfo.get('times').keys():
+            color = int(bartinfo.get('times').get(station).get('color'), 16)
+            for t in bartinfo.get('times').get(station).get('times'):
+                self.strip.setPixelColor(t - 1, color)
+        self.strip.show()
 
 
     def idle(self, settings=choppy, maxstep=60000):
