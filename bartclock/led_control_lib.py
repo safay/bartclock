@@ -2,45 +2,26 @@
 # Modified from Adafruit Dot Star RGB LED strip test code.
 
 import time
+import math
+from time import sleep
 
 import numpy as np
-
 from dotstar import Adafruit_DotStar
 
-from time import sleep
+from bartclock.idle_modes import *
 
 numpixels = 60 # Number of LEDs in strip
 datapin   = 23
 clockpin  = 24
 
-pretty_smooth = {'red':{'wl':17, 'h':0.25},
-            'green':{'wl':7, 'h':0.25},
-            'blue':{'wl':13, 'h':0.25}}
 
-worm_glitch = {'red':{'wl':-5, 'h':0.25},
-            'green':{'wl':7, 'h':0.25},
-            'blue':{'wl':3, 'h':-0.25}}
-
-gummi_worm = {'red':{'wl':-2, 'h':0.25},
-            'green':{'wl':7, 'h':0.25},
-            'blue':{'wl':5, 'h':0.25}}
-
-pretty_stripes = {'red':{'wl':1.3, 'h':0.1},
-            'green':{'wl':-1.1, 'h':0.1},
-            'blue':{'wl':1, 'h':0.1}}
-
-very_smooth = {'red':{'wl':17, 'h':0.25},
-            'green':{'wl':11, 'h':0.25},
-            'blue':{'wl':23, 'h':0.25}}
-
-unicorn_blood = {'red':{'wl':0.52, 'h':0.25},
-            'green':{'wl':0.47, 'h':0.25},
-            'blue':{'wl':0.51, 'h':0.25}}
+def gamma_correct_vector(gamma):
+    powers = [math.pow(x, gamma) for x in range(255)]
+    gamma_corrected = [int(x * 255 / max(powers)) for x in powers]
+    return gamma_corrected
 
 
-rich = {'red':{'wl':2.9, 'h':0.01},
-            'green':{'wl':2.3, 'h':0.6},
-            'blue':{'wl':1.3, 'h':0.1}}
+gamma = gamma_correct_vector(2.8)
 
 
 def init_strip(numpixels, datapin, clockpin):
@@ -49,42 +30,6 @@ def init_strip(numpixels, datapin, clockpin):
     strip.setBrightness(64) # Limit brightness to ~1/4 duty cycle
     return strip
 
-# Runs 10 LEDs at a time along strip, cycling through red, green and blue.
-# This requires about 200 mA for all the 'on' pixels + 1 mA per 'off' pixel.
-
-def rgb_runner_test():
-    strip = init_strip(numpixels=numpixels, datapin=datapin, clockpin=clockpin)
-    head  = 0               # Index of first 'on' pixel
-    tail  = -10             # Index of last 'off' pixel
-    color = 0xFF0000        # 'On' color (starts red)
-    while True:                              # Loop forever
-        strip.setPixelColor(head, color) # Turn on 'head' pixel
-        strip.setPixelColor(tail, 0)     # Turn off 'tail'
-        strip.show()                     # Refresh strip
-        time.sleep(1.0 / 50)             # Pause 20 milliseconds (~50 fps)
-        head += 1                        # Advance head position
-        if(head >= numpixels):           # Off end of strip?
-            head    = 0              # Reset to start
-    color >>= 8              # Red->green->blue->black
-    if(color == 0): color = 0xFF0000 # If black, reset to red
-    tail += 1                        # Advance tail position
-    if(tail >= numpixels): tail = 0  # Off end? Reset
-
-
-
-def light_pixel(index, color, brightness):
-    pass
-
-# how would a bart strip look as an object?
-# A strip has state.
-# Lights should brighten and dim in a defined manner; take about 2 seconds for the transition.
-# There should be an update method for the BartStrip
-# When the update is received, A routine moves each pixel to its new value.
-# The actual rate of updates is not significant.  Every 15 sec?  More than often enough.
-# Curious to know how to peg a process to the internal clock.  Look into this.
-# Ramp up to an arbitrary value.
-# 20fps
-# so it would look something like this:
 
 def make_rgb_hex(red, green, blue):
     def _make_hex(input):
@@ -125,13 +70,24 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
         # example: {'message': None, 'times': {'Richmond': {'color': '#ff9933', 'times': ['15', '35', '57']},
         # 'Warm Springs': {'color': '#ff9933', 'times': ['15', '35', '55']}}}
         #int(color, 16)
+        print bartinfo
+        def _hex_station_color(bartinfo, station):
+            # returns a gamma-corrected tuple of rgb colors given bartinfo and station
+            basecolor = bartinfo.get('times').get(station).get('color')[1:]
+            r = basecolor[0:2]
+            g = basecolor[2:4]
+            b = basecolor[4:6]
+            return gamma[int(g, 16) - 1], gamma[int(r, 16) - 1], gamma[int(b, 16) - 1]
         black = make_rgb_hex(0, 0, 0)
         for i in self.led_ix:
             self.strip.setPixelColor(i, black)
         for station in bartinfo.get('times').keys():
-            color = int(bartinfo.get('times').get(station).get('color')[1:], 16)
+            color = _hex_station_color(bartinfo, station)
             for t in bartinfo.get('times').get(station).get('times'):
-                self.strip.setPixelColor(int(t) - 1, color)
+                try:
+                    self.strip.setPixelColor(int(t) - 1, color[0], color[1], color[2])
+                except ValueError:
+                    print "Error, time = {}".format(t)
         self.strip.show()
 
 
@@ -156,4 +112,5 @@ class BartStrip(object): # check to see how to inherit from the DotStar object..
                 step += 1
             else:
                 step = 0
+
 
